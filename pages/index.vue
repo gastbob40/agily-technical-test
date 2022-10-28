@@ -24,17 +24,23 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+@import '~@/assets/scss/mixins.scss';
+
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 64px;
+  gap: 48px;
 
   height: 100vh;
   width: 100vw;
 
   padding: 16px;
+
+  @include down(400) {
+    gap: 32px;
+  }
 }
 
 h1 {
@@ -42,9 +48,17 @@ h1 {
   line-height: 1em;
   font-weight: 900;
 
-  background: -webkit-linear-gradient(#25c35d, #d8e69b);
+  background: -webkit-linear-gradient(#21b150, #d7e69b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  @include down(400px) {
+    font-size: 2.5em;
+  }
+
+  @include down(300px) {
+    font-size: 2em;
+  }
 }
 
 form {
