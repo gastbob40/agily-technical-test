@@ -141,6 +141,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '~@/assets/scss/mixins.scss';
+
 .container {
   width: 100vw;
   height: 100vh;
@@ -155,6 +157,26 @@ export default Vue.extend({
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
+  overflow-y: scroll;
+
+  @include down(1000) {
+    flex-direction: column;
+    padding: 64px 32px 0 32px;
+    gap: 32px;
+  }
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50%;
+
+  @include down(1000) {
+    width: 100%;
+    gap: 32px;
+  }
 }
 
 .back-button {
@@ -175,13 +197,6 @@ export default Vue.extend({
   }
 }
 
-.left {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 50%;
-}
-
 .current-day {
   background-color: var(--accent-color-shade);
   border-radius: 15px 15px 0 0;
@@ -190,6 +205,16 @@ export default Vue.extend({
   max-width: 400px;
   padding: 25px 25px 80px 25px;
   color: white;
+
+  @include down(1000) {
+    max-width: 100%;
+    border-radius: 15px;
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
 }
 
 .current-day__title {
@@ -203,6 +228,16 @@ export default Vue.extend({
   img {
     width: 64px;
     height: 64px;
+
+    @include down(500) {
+      width: 96px;
+      height: 96px;
+    }
+  }
+
+  @include down(500) {
+    flex-direction: column;
+    gap: 8px;
   }
 }
 
@@ -211,6 +246,11 @@ export default Vue.extend({
   grid-template-columns: repeat(2, 1fr);
   font-weight: 700;
   font-size: 0.9em;
+
+  @include down(500) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 }
 
 
@@ -218,6 +258,8 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  padding: 20px 0;
 }
 
 .day-item {
@@ -232,6 +274,12 @@ export default Vue.extend({
 
   background-color: var(--accent-color);
   border-radius: 15px;
+
+  @include down(500) {
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+  }
 
   img {
     width: 96px;
