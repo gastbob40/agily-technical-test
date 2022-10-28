@@ -13,6 +13,7 @@
 <script lang="ts">
 import Vue from "vue";
 import WeatherDay from "~/utils/types/weatherDay";
+import {dateToWeekDay, dateToMonthDay, kelvinToCelsius} from "~/utils/date";
 
 export default Vue.extend({
   name: "WeatherPage",
@@ -23,27 +24,9 @@ export default Vue.extend({
     }
   },
   methods: {
-    dateToCompleteString(date: number) {
-      const dateObj = new Date(date * 1000);
-
-      return dateObj.toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'})
-        .replace(/\b\w/g, l => l.toUpperCase());
-    },
-    kelvinToCelsius(kelvin: number) {
-      return Math.round((kelvin - 273.15) * 10) / 10 + '°C';
-    },
-    dateToWeekDay(date: number) {
-      const dateObj = new Date(date * 1000);
-
-      return dateObj.toLocaleDateString('fr-FR', {weekday: 'long'})
-        .replace(/\b\w/g, l => l.toUpperCase());
-    },
-    dateToMonthDay(date: number) {
-      const dateObj = new Date(date * 1000);
-
-      return dateObj.toLocaleDateString('fr-FR', {day: 'numeric', month: 'long'})
-        .replace(/\b\w/g, l => l.toUpperCase());
-    }
+    dateToWeekDay,
+    dateToMonthDay,
+    kelvinToCelsius
   },
 });
 </script>
