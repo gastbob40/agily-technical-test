@@ -15,15 +15,24 @@
         </div>
 
         <div class="current-day__info">
-          <div>Jour - {{kelvinToCelsius(current.temp.day)}}</div>
-          <div>Pression - {{current.pressure}}hPa</div>
-          <div>Nuit - {{kelvinToCelsius(current.temp.night)}}</div>
-          <div>Vent - {{current.wind_speed}}Km/h</div>
-          <div>Humidité - {{current.humidity}}%</div>
+          <div>Jour - {{ kelvinToCelsius(current.temp.day) }}</div>
+          <div>Pression - {{ current.pressure }}hPa</div>
+          <div>Nuit - {{ kelvinToCelsius(current.temp.night) }}</div>
+          <div>Vent - {{ current.wind_speed }}Km/h</div>
+          <div>Humidité - {{ current.humidity }}%</div>
         </div>
       </div>
     </div>
-    <div class="right">a</div>
+    <div class="right">
+      <div v-for="day in days" class="day-item">
+        <img :src="`https://openweathermap.org/img/wn/${day.weather[0].icon}@4x.png`" alt="">
+        <div class="day-item__info">
+          <div class="day-item__info__weekday">{{ dateToWeekDay(day.dt) }}</div>
+          <div class="day-item__info__day">{{ dateToMonthDay(day.dt) }}</div>
+        </div>
+        <div class="day-item__temperature">{{ kelvinToCelsius(day.temp.day) }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -59,7 +68,19 @@ export default Vue.extend({
         .replace(/\b\w/g, l => l.toUpperCase());
     },
     kelvinToCelsius(kelvin: number) {
-      return Math.round((kelvin - 273.15) * 10 ) / 10 + '°C';
+      return Math.round((kelvin - 273.15) * 10) / 10 + '°C';
+    },
+    dateToWeekDay(date: number) {
+      const dateObj = new Date(date * 1000);
+
+      return dateObj.toLocaleDateString('fr-FR', {weekday: 'long'})
+        .replace(/\b\w/g, l => l.toUpperCase());
+    },
+    dateToMonthDay(date: number) {
+      const dateObj = new Date(date * 1000);
+
+      return dateObj.toLocaleDateString('fr-FR', {day: 'numeric', month: 'long'})
+        .replace(/\b\w/g, l => l.toUpperCase());
     }
   },
   async asyncData({params}) {
@@ -163,5 +184,49 @@ export default Vue.extend({
   grid-template-columns: repeat(2, 1fr);
   font-weight: 700;
   font-size: 0.9em;
+}
+
+
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.day-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+
+  gap: 24px;
+  padding: 0 16px 0 8px;
+
+  background-color: var(--accent-color);
+  border-radius: 15px;
+
+  img {
+    width: 96px;
+    height: 96px;
+  }
+
+  .day-item__temperature {
+    font-size: 2.5em;
+    font-weight: 700;
+  }
+
+  .day-item__info {
+    text-align: center;
+
+    .day-item__info__weekday {
+      font-size: 1.2em;
+      font-weight: 700;
+    }
+
+    .day-item__info__day {
+      font-size: 0.9em;
+    }
+  }
 }
 </style>
