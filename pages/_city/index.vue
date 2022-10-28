@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-bind:style="{backgroundImage: `url(${imageUrl})`}">
     <div class="left">
       <RouterLink to="/" class="back-button">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -112,7 +112,30 @@ export default Vue.extend({
 
     const {daily}: { daily: WeatherDay[] } = await weatherRes.json();
 
-    return {current: daily[0], days: daily.slice(1)};
+    const flickrUrl = `https://api.flickr.com/services/rest?sort=relevance&parse_tags=1&content_types=0&extras=can_comment,can_print,count_comments,count_faves,description,isfavorite,license,media,needs_interstitial,owner_name,path_alias,realname,rotation,url_sq,url_q,url_t,url_s,url_n,url_w,url_m,url_z,url_c,url_l&per_page=25&page=1&lang=fr-FR&orientation=landscape&text=${city.toLowerCase()}&method=flickr.photos.search&api_key=f5b3f49e7b06eccb426bdc2cd7422016&format=json&hermes=1&hermesClient=1&nojsoncallback=1`;
+    const flickrRes = await fetch(flickrUrl);
+    if (flickrRes.status !== 200) {
+      return {
+        error: {
+          code: flickrRes.status,
+          message: flickrRes.statusText
+        }
+      }
+    }
+    const {photos} = await flickrRes.json();
+
+    if (photos.photo.length == 0) {
+      return {
+        error: {
+          code: 404,
+          message: 'No photos found'
+        }
+      }
+    }
+
+    const imageUrl = photos.photo[0].url_l;
+
+    return {current: daily[0], days: daily.slice(1), imageUrl: imageUrl};
   }
 })
 </script>
@@ -128,6 +151,10 @@ export default Vue.extend({
   justify-content: space-between;
 
   padding: 64px 96px 0 64px;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .back-button {
@@ -156,7 +183,7 @@ export default Vue.extend({
 }
 
 .current-day {
-  background-color: var(--accent-color);
+  background-color: var(--accent-color-shade);
   border-radius: 15px 15px 0 0;
 
   width: 100%;
