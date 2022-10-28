@@ -1,5 +1,7 @@
 # agily-technical-test
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6db76d3f-dce8-476b-9593-2a7a7669cd81/deploy-status)](https://app.netlify.com/sites/dulcet-pie-3873ce/deploys)
+
 ## Build Setup
 
 ```bash
