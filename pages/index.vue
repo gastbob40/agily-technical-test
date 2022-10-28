@@ -2,8 +2,8 @@
   <div class="container">
     <h1>The Forecast<br>Weather APP</h1>
 
-    <form action="/" method="get">
-      <input type="search" placeholder="Search">
+    <form @submit="onFormSubmit">
+      <input type="search" placeholder="Search" name="city">
       <button type="submit">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <path fill="currentColor"
@@ -19,7 +19,14 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'IndexPage'
+  name: 'IndexPage',
+  methods: {
+    onFormSubmit: function(e: Event) {
+      e.preventDefault()
+      const city = (e.target as HTMLFormElement).city.value
+       this.$router.push({ name: 'city', params: { city } })
+    }
+  }
 })
 </script>
 
