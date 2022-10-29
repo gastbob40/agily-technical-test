@@ -6,7 +6,8 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx,.vue --fix"
   },
   "dependencies": {
     "@nuxtjs/eslint-config-typescript": "^11.0.0",
