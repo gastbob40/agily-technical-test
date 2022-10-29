@@ -9,6 +9,26 @@ cette technologie.
 
 Cette découverte a donc influencé la façon dont j'ai abordé le test.
 
+## Installation
+
+Installer les dépendances:
+
+```bash
+$ yarn
+```
+
+Lancer le serveur de développement:
+
+```bash
+$ yarn dev
+```
+
+Vérifier le code:
+
+```bash
+$ yarn lint
+```
+
 ## Découpage du projet
 
 - Création du projet avec Nuxt JS, et découverte du framework (30-40 min)
