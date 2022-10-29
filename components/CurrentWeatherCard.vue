@@ -17,12 +17,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import WeatherDay from "~/utils/types/weatherDay";
-import {dateToCompleteString, kelvinToCelsius} from "~/utils/date";
+import Vue from 'vue'
+import WeatherDay from '~/utils/types/weatherDay'
+import { dateToCompleteString, kelvinToCelsius } from '~/utils/date'
 
 export default Vue.extend({
-  name: "CurrentWeatherCard",
+  name: 'CurrentWeatherCard',
   props: {
     day: {
       type: Object as () => WeatherDay,
@@ -32,13 +32,12 @@ export default Vue.extend({
   methods: {
     dateToCompleteString,
     kelvinToCelsius
-  },
-});
+  }
+})
 </script>
 
 <style lang="scss" scoped>
 @import '~@/assets/scss/mixins.scss';
-
 
 .current-day {
   background-color: var(--accent-color-shade);

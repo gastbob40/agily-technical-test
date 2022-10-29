@@ -3,20 +3,26 @@
   <div class="day-item">
     <img :src="`https://openweathermap.org/img/wn/${day.weather[0].icon}@4x.png`" alt="">
     <div class="day-item__info">
-      <div class="day-item__info__weekday">{{ dateToWeekDay(day.dt) }}</div>
-      <div class="day-item__info__day">{{ dateToMonthDay(day.dt) }}</div>
+      <div class="day-item__info__weekday">
+        {{ dateToWeekDay(day.dt) }}
+      </div>
+      <div class="day-item__info__day">
+        {{ dateToMonthDay(day.dt) }}
+      </div>
     </div>
-    <div class="day-item__temperature">{{ kelvinToCelsius(day.temp.day) }}</div>
+    <div class="day-item__temperature">
+      {{ kelvinToCelsius(day.temp.day) }}
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import WeatherDay from "~/utils/types/weatherDay";
-import {dateToWeekDay, dateToMonthDay, kelvinToCelsius} from "~/utils/date";
+import Vue from 'vue'
+import WeatherDay from '~/utils/types/weatherDay'
+import { dateToWeekDay, dateToMonthDay, kelvinToCelsius } from '~/utils/date'
 
 export default Vue.extend({
-  name: "WeatherPage",
+  name: 'WeatherPage',
   props: {
     day: {
       type: Object as () => WeatherDay,
@@ -27,13 +33,12 @@ export default Vue.extend({
     dateToWeekDay,
     dateToMonthDay,
     kelvinToCelsius
-  },
-});
+  }
+})
 </script>
 
 <style lang="scss" scoped>
 @import '~@/assets/scss/mixins.scss';
-
 
 .day-item {
   display: flex;

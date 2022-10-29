@@ -1,33 +1,35 @@
 <template>
-  <div class="container" v-bind:style="{backgroundImage: `url(${imageUrl})`}">
+  <div class="container" :style="{backgroundImage: `url(${imageUrl})`}">
     <div class="left">
       <RouterLink to="/" class="back-button">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-          <path fill="currentColor"
-                d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
+          <path
+            fill="currentColor"
+            d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+          />
         </svg>
       </RouterLink>
 
-      <current-weather-card :day="current"></current-weather-card>
+      <current-weather-card :day="current" />
     </div>
     <div class="right">
-      <WeatherItem v-for="day in days" v-bind:key="day.dt" :day="day"></WeatherItem>
+      <WeatherItem v-for="day in days" :key="day.dt" :day="day" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import Coordinates from "~/utils/types/coordinates";
-import WeatherDay from "~/utils/types/weatherDay";
+import Coordinates from '~/utils/types/coordinates'
+import WeatherDay from '~/utils/types/weatherDay'
 
 export default Vue.extend({
   name: 'WeatherPage',
-  async asyncData({params}) {
-    const city = params['city'];
-    const cityToCoordsUrl = `http://api.weatherstack.com/current?access_key=7a0fa8ca744af6d18c0976bf836ccb65&query=${city}`;
+  async asyncData ({ params }) {
+    const city = params.city
+    const cityToCoordsUrl = `http://api.weatherstack.com/current?access_key=7a0fa8ca744af6d18c0976bf836ccb65&query=${city}`
 
-    const coordsRes = await fetch(cityToCoordsUrl);
+    const coordsRes = await fetch(cityToCoordsUrl)
     if (coordsRes.status !== 200) {
       return {
         error: {
@@ -37,10 +39,10 @@ export default Vue.extend({
       }
     }
 
-    const {location}: { location: Coordinates } = await coordsRes.json();
-    const coordsToWeatherUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.lon}&exclude=hourly,minutely&lang=fr&appid=db988691faf182dfc3750cd1e57f3718`;
+    const { location }: { location: Coordinates } = await coordsRes.json()
+    const coordsToWeatherUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.lon}&exclude=hourly,minutely&lang=fr&appid=db988691faf182dfc3750cd1e57f3718`
 
-    const weatherRes = await fetch(coordsToWeatherUrl);
+    const weatherRes = await fetch(coordsToWeatherUrl)
     if (weatherRes.status !== 200) {
       return {
         error: {
@@ -50,10 +52,10 @@ export default Vue.extend({
       }
     }
 
-    const {daily}: { daily: WeatherDay[] } = await weatherRes.json();
+    const { daily }: { daily: WeatherDay[] } = await weatherRes.json()
 
-    const flickrUrl = `https://api.flickr.com/services/rest?sort=relevance&parse_tags=1&content_types=0&extras=can_comment,can_print,count_comments,count_faves,description,isfavorite,license,media,needs_interstitial,owner_name,path_alias,realname,rotation,url_sq,url_q,url_t,url_s,url_n,url_w,url_m,url_z,url_c,url_l&per_page=25&page=1&lang=fr-FR&orientation=landscape&text=${city.toLowerCase()}&method=flickr.photos.search&api_key=f5b3f49e7b06eccb426bdc2cd7422016&format=json&hermes=1&hermesClient=1&nojsoncallback=1`;
-    const flickrRes = await fetch(flickrUrl);
+    const flickrUrl = `https://api.flickr.com/services/rest?sort=relevance&parse_tags=1&content_types=0&extras=can_comment,can_print,count_comments,count_faves,description,isfavorite,license,media,needs_interstitial,owner_name,path_alias,realname,rotation,url_sq,url_q,url_t,url_s,url_n,url_w,url_m,url_z,url_c,url_l&per_page=25&page=1&lang=fr-FR&orientation=landscape&text=${city.toLowerCase()}&method=flickr.photos.search&api_key=f5b3f49e7b06eccb426bdc2cd7422016&format=json&hermes=1&hermesClient=1&nojsoncallback=1`
+    const flickrRes = await fetch(flickrUrl)
     if (flickrRes.status !== 200) {
       return {
         error: {
@@ -62,9 +64,9 @@ export default Vue.extend({
         }
       }
     }
-    const {photos} = await flickrRes.json();
+    const { photos } = await flickrRes.json()
 
-    if (photos.photo.length == 0) {
+    if (photos.photo.length === 0) {
       return {
         error: {
           code: 404,
@@ -73,9 +75,9 @@ export default Vue.extend({
       }
     }
 
-    const imageUrl = photos.photo[0].url_l;
+    const imageUrl = photos.photo[0].url_l
 
-    return {current: daily[0], days: daily.slice(1), imageUrl: imageUrl};
+    return { current: daily[0], days: daily.slice(1), imageUrl }
   }
 })
 </script>
