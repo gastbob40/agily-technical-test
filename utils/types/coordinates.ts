@@ -3,4 +3,4 @@ type Coordinates = {
   lon: number
 }
 
-export default Coordinates;
+export default Coordinates

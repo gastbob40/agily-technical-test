@@ -12,4 +12,4 @@ type WeatherDay = {
   }[]
 }
 
-export default WeatherDay;
+export default WeatherDay
