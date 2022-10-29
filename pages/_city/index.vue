@@ -23,57 +23,41 @@ import Vue from 'vue'
 import Coordinates from '~/utils/types/coordinates'
 import WeatherDay from '~/utils/types/weatherDay'
 
+// Import error from nuxt
+
 export default Vue.extend({
   name: 'WeatherPage',
-  async asyncData ({ params }) {
+  async asyncData ({ params, error }) {
+    const err = (str: string) => {
+      return error({
+        statusCode: 404,
+        message: str
+      })
+    }
+
     const city = params.city
     const cityToCoordsUrl = `http://api.weatherstack.com/current?access_key=7a0fa8ca744af6d18c0976bf836ccb65&query=${city}`
 
     const coordsRes = await fetch(cityToCoordsUrl)
-    if (coordsRes.status !== 200) {
-      return {
-        error: {
-          code: coordsRes.status,
-          message: coordsRes.statusText
-        }
-      }
-    }
+    if (coordsRes.status !== 200) { return err('City not found') }
 
     const { location }: { location: Coordinates } = await coordsRes.json()
+    if (!location) { return err('City not found') }
+
     const coordsToWeatherUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.lon}&exclude=hourly,minutely&lang=fr&appid=db988691faf182dfc3750cd1e57f3718`
 
     const weatherRes = await fetch(coordsToWeatherUrl)
-    if (weatherRes.status !== 200) {
-      return {
-        error: {
-          code: weatherRes.status,
-          message: weatherRes.statusText
-        }
-      }
-    }
+    if (weatherRes.status !== 200) { return err('Weather not found') }
 
     const { daily }: { daily: WeatherDay[] } = await weatherRes.json()
 
     const flickrUrl = `https://api.flickr.com/services/rest?sort=relevance&parse_tags=1&content_types=0&extras=can_comment,can_print,count_comments,count_faves,description,isfavorite,license,media,needs_interstitial,owner_name,path_alias,realname,rotation,url_sq,url_q,url_t,url_s,url_n,url_w,url_m,url_z,url_c,url_l&per_page=25&page=1&lang=fr-FR&orientation=landscape&text=${city.toLowerCase()}&method=flickr.photos.search&api_key=f5b3f49e7b06eccb426bdc2cd7422016&format=json&hermes=1&hermesClient=1&nojsoncallback=1`
     const flickrRes = await fetch(flickrUrl)
-    if (flickrRes.status !== 200) {
-      return {
-        error: {
-          code: flickrRes.status,
-          message: flickrRes.statusText
-        }
-      }
-    }
+    if (flickrRes.status !== 200) { return err('Flickr image not found') }
+
     const { photos } = await flickrRes.json()
 
-    if (photos.photo.length === 0) {
-      return {
-        error: {
-          code: 404,
-          message: 'No photos found'
-        }
-      }
-    }
+    if (photos.photo.length === 0) { return err('Flickr image not found') }
 
     const imageUrl = photos.photo[0].url_l
 

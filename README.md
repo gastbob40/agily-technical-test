@@ -41,6 +41,7 @@ $ yarn lint
 - Refacto du code (composants, types, ...) (1h)
 - Ajout de netlify / eslint / CI (1h)
 - Ajout de la gestion du click dans la liste des météos (30min)
+- Ajout des 404 sur la page d'une ville (15min)
 
 ## Récapitulatif
 
