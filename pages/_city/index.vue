@@ -10,10 +10,10 @@
         </svg>
       </RouterLink>
 
-      <current-weather-card :day="current" />
+      <current-weather-card :day="selected" />
     </div>
     <div class="right">
-      <WeatherItem v-for="day in days" :key="day.dt" :day="day" />
+      <WeatherItem v-for="day in days" :key="day.dt" :day="day" @click.native="() => switchSelected(day)" />
     </div>
   </div>
 </template>
@@ -77,7 +77,24 @@ export default Vue.extend({
 
     const imageUrl = photos.photo[0].url_l
 
-    return { current: daily[0], days: daily.slice(1), imageUrl }
+    return { current: daily[0], selected: daily[0], days: daily.slice(1), imageUrl }
+  },
+  data () {
+    return {
+      days: [] as WeatherDay[],
+      selected: {} as WeatherDay,
+      current: {} as WeatherDay,
+      imageUrl: '' as string
+    }
+  },
+  methods: {
+    switchSelected (day: WeatherDay) {
+      if (day.dt === this.selected.dt) {
+        this.selected = this.current
+      } else {
+        this.selected = day
+      }
+    }
   }
 })
 </script>

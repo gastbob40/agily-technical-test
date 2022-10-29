@@ -53,6 +53,13 @@ export default Vue.extend({
   background-color: var(--accent-color);
   border-radius: 15px;
 
+  cursor: pointer;
+  transition: 0.1s linear;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
   @include down(500) {
     flex-direction: column;
     gap: 8px;

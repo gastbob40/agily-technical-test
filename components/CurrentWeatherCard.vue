@@ -44,7 +44,7 @@ export default Vue.extend({
   border-radius: 15px 15px 0 0;
 
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
   padding: 25px 25px 80px 25px;
   color: white;
 
